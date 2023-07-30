@@ -10,21 +10,10 @@ export function SignInButton(){
         return <>....</>
     }
     if(status === 'authenticated'){
-        return(
-            <Link href={'/dashboard'}>
-                <Image
-                src={session.user?.image ?? '/mememan.webp'}
-                width={32}
-                height={32}
-                alt='your name'
-                >
-
-                </Image>
-            </Link>
-        )
+       
     }
-    return <button onClick={() => signIn()}>Sign In</button>
+    return <button className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" onClick={() => signIn()}>Sign In</button>
 }
 export function SignOutButton(){
-    return <button onClick={()=>signOut()}>Sign Out</button>
+    return <button className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" onClick={()=>signOut()}>Sign Out</button>
 }

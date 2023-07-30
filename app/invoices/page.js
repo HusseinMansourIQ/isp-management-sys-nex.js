@@ -1,9 +1,8 @@
 import Image from 'next/image'
-import { Prisma } from '@prisma/client'
 import { prisma } from '@/lib/prisma'
 export default async function Home() {
   //server
-const users = await prisma.Costumers.findMany()
+const users = await prisma.invoice.findMany()
   return (
     <main className=" space-y-4 flex-col items-center justify-between p-24">
 
@@ -15,14 +14,20 @@ const users = await prisma.Costumers.findMany()
                     user name
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    display name 
+                    action by  
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    debt
+                    type
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    amount
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    amount left
                 </th>
                 
                 <th scope="col" class="px-6 py-3">
-                    <span class="sr-only">Edit</span>
+                    <span class="sr-only">note</span>
                 </th>
             </tr>
         </thead>
@@ -31,18 +36,29 @@ const users = await prisma.Costumers.findMany()
           
           <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-400 dark:hover:bg-gray-600">
           <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-              <a href={`/createInvoice/${user.id}`}>{user.user_name}</a>
+              <a href={`/createInvoice/${user.id}`}>{user.user_name}"</a>
           </th>
+
           <td class="px-6 py-4">
-              {user.display_name}
+              {user.manager_name}
           </td>
+
           <td class="px-6 py-4">
-              {user.debt}
+              {user.type}
+          </td>
+
+          <td class="px-6 py-4">
+              {user.am_change}
+          </td>
+
+          <td class="px-6 py-4">
+              {user.left_debt}
+          </td>
+
+          <td class="px-6 py-4">
+              {user.note}
           </td>
          
-          <td class="px-6 py-4 text-right">
-              <a href={`/${user.id}`} class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-          </td>
       </tr>
 
           )})}

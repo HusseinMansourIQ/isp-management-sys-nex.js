@@ -1,7 +1,7 @@
 //import FollowButton from '@/components/FollowButton/FollowButton';
 import { prisma } from '@/lib/prisma';
 import { Metadata } from 'next';
-
+import { redirect } from 'next/navigation';
 
 
 
@@ -15,7 +15,7 @@ export default async function UserProfile({ params }) {
       user_name : formData.get('user_name'),
       password : formData.get('password'),
       display_name : formData.get('display_name'),
-      debt : formData.get('debt'),
+      debt : debt,
       
         }
 
@@ -36,7 +36,7 @@ export default async function UserProfile({ params }) {
             <div class="mt-8 space-y-6">
       <div>
         <label for="user name" class="text-sm text-gray-700 block mb-1 font-medium">user name</label>
-        <input type="text"  name='user_name' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+        <input type="text" defaultValue={user_name} name='user_name' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
       </div>
 
       <div>
@@ -45,12 +45,12 @@ export default async function UserProfile({ params }) {
       </div>
       <div>
         <label for="display name" class="text-sm text-gray-700 block mb-1 font-medium">display name</label>
-        <input type="text" value={display_name} name='display_name' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+        <input type="text" defaultValue={display_name} name='display_name' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
       </div>
 
       <div>
         <label for="debt" class="text-sm text-gray-700 block mb-1 font-medium">debt</label>
-        <h2 class="font-medium text-3xl">{debt}</h2>
+        <h2 name='debt' class="font-medium text-3xl">{debt}</h2>
       </div>
     </div>
 
