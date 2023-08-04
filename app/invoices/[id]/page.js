@@ -2,7 +2,7 @@
 import { prisma } from '@/lib/prisma';
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
-import { authOptions } from "../api/auth/[...nextauth]/route"
+import { authOptions } from "../../api/auth/[...nextauth]/route"
 
 
 
