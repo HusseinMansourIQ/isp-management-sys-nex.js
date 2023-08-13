@@ -1,14 +1,29 @@
 import Image from 'next/image'
 import { Prisma } from '@prisma/client'
 import { prisma } from '@/lib/prisma'
-export default async function Home() {
+import Search from '@/components/search'
+import Trigger from './trigger';
+export default async function Home({searchParams}) {
+    const page =  typeof searchParams.page === 'string' ? Number(searchParams.page) : 1
+    const limit =typeof searchParams.limit === 'string' ? Number(searchParams.limit) : 5
+    const search = searchParams.search ? searchParams.search : ""
   //server
-const users = await prisma.Costumers.findMany()
+
+const users = await prisma.Costumers.findMany({
+    take: limit,
+  skip: (page-1)*limit ,
+  where: {
+    user_name:{
+        contains : search
+    }
+  },
+})
   return (
     <main className=" space-y-4 flex-col items-center justify-between p-24">
+<Search search={search} />  
 
 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+  <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
                 <th  scope="col" class="px-6 py-3">
