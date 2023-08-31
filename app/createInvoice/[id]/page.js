@@ -4,6 +4,7 @@ import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { authOptions } from "../../api/auth/[...nextauth]/route"
 import { getServerSession } from 'next-auth';
+import { data } from 'autoprefixer';
 
 
 
@@ -39,7 +40,7 @@ async function addinvoice(formData){
         where:{
             id : id 
         },
-        data:{debt : formData.get('left_debt')}
+        data:{debt : Number(formData.get('left_debt')) }
     })
   
     const mng_name = session.user.name;
@@ -47,9 +48,10 @@ async function addinvoice(formData){
       manager_name : mng_name,
       user_name : user_name,
       left_debt : Number(formData.get('left_debt')),
-      am_change : change,
+      am_change : Number (change),
       type : type,
-      note : formData.get('note')
+      note : formData.get('note'),
+      date:(new Date()).toISOString()
         }
   
         await prisma.invoice.create({

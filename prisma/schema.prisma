@@ -54,17 +54,18 @@ model Costumers{
   user_name String
   display_name String
   password String
-  debt Int
+  debt Int?
 }
 
 model invoice {
   id String @id @default(cuid())
   manager_name String
   user_name  String
-  left_debt Int
-  am_change Int
+  left_debt Int?
+  am_change Int?
   type String
   note String
+  date DateTime?
 
 }
 

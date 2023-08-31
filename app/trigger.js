@@ -13,7 +13,7 @@ const Trigger = ({ limit }) => {
       const observer = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            router.push(`/?limit=${limit + 10}`, { scroll: false })
+            router.push(`/?limit=${limit + 20}`, { scroll: false })
             observer.disconnect()
           }
         })

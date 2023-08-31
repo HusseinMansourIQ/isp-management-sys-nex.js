@@ -1,5 +1,7 @@
 import Image from 'next/image'
 import { prisma } from '@/lib/prisma'
+const moment = require('moment');
+
 export default async function Home() {
   //server
 const users = await prisma.invoice.findMany()
@@ -24,6 +26,9 @@ const users = await prisma.invoice.findMany()
                 </th>
                 <th scope="col" class="px-6 py-3">
                     amount left
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Date
                 </th>
                 
                 <th scope="col" class="px-6 py-3">
@@ -53,6 +58,10 @@ const users = await prisma.invoice.findMany()
 
           <td class="px-6 py-4">
               {user.left_debt}
+          </td>
+
+          <td class="px-6 py-4">
+          {moment(user.date).format('YYYY-MM-DD')}
           </td>
 
           <td class="px-6 py-4">

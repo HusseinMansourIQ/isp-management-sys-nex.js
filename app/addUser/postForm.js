@@ -8,7 +8,7 @@ export function PostForm(){
       user_name : formData.get('user_name'),
       password : formData.get('password'),
       display_name : formData.get('display_name'),
-      debt : formData.get('debt'),
+      debt : Number(formData.get('debt')) ,
       
         }
 

@@ -66,7 +66,7 @@ const users = await prisma.Costumers.findMany({
         </tbody>
     </table>
 </div>
-
+{}
 </main>
   )
 }
