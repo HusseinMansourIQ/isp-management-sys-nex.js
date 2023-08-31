@@ -4,6 +4,11 @@ export function PostForm(){
     
   async function addUser(formData){
     'use server';
+   const isExist =  await prisma.Costumers.findFirst( {where : {user_name : formData.get('user_name')}})
+   if(isExist){
+    redirect('/addUser')
+console.log(isExist)
+  }else{
     const data = {
       user_name : formData.get('user_name'),
       password : formData.get('password'),
@@ -16,6 +21,7 @@ export function PostForm(){
           data
         })
         redirect('/')
+      }
   }
        
 

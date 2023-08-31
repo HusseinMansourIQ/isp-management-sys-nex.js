@@ -59,8 +59,8 @@ model Costumers{
 
 model invoice {
   id String @id @default(cuid())
-  manager_name String
-  user_name  String
+  manager_name String 
+  user_name  String @unique
   left_debt Int?
   am_change Int?
   type String
