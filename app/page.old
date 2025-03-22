@@ -1,0 +1,292 @@
+import Image from 'next/image'
+import { Prisma } from '@prisma/client'
+import { prisma } from '@/lib/prisma'
+import Search from '@/components/search'
+import Trigger from './trigger';
+export default async function Home({searchParams}) {
+    const page =  typeof searchParams.page === 'string' ? Number(searchParams.page) : 1
+    const limit =typeof searchParams.limit === 'string' ? Number(searchParams.limit) : 5
+    const search = searchParams.search ? searchParams.search : ""
+  //server
+
+const users = await prisma.Costumers.findMany({
+    take: limit,
+  skip: (page-1)*limit ,
+  where: {
+    user_name:{
+        contains : search
+    }
+  },
+})
+  return (
+    <div>
+        <div class="navbar">
+            <h1>Study with Me</h1>
+            <ul>
+                <li><a href="lod.html" target="_blank">جدول مهام</a></li>
+                <li><a href="sabora.html" target="_blank">سبورة</a></li>
+                <li><a href="goal.html" target="_blank">ترفيه</a></li>
+                <li><a href="مكان دخول الملازم.html" target="_blank">ملازم</a></li>
+    
+    
+    
+            </ul>
+        </div>
+        <style>
+            .navbar {
+                width: 100%;
+                background-color: #1ABC9C;
+                padding: 10px;
+                position: fixed;
+                top: 0;
+                left: 0;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                z-index: 1000;
+            }
+    
+            .navbar h1 {
+                margin: 0;
+                font-size: 24px;
+                color: #2C3E50;
+                font-weight: bold;
+                padding-left: 20px;
+            }
+    
+            .navbar ul {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                display: flex;
+            }
+    
+            .navbar ul li {
+                margin: 0 10px;
+            }
+    
+            .navbar ul li a {
+                text-decoration: none;
+                color: #ECF0F1;
+                padding: 5px 10px;
+                border-radius: 5px;
+                transition: background-color 0.3s ease;
+            }
+    
+            .navbar ul li a:hover {
+                background-color: #2C3E50;
+            }
+        </style>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Study with Me</title>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Amiri&display=swap');
+    
+            body {
+                font-family: 'Amiri', serif;
+                background-color: #2C3E50;
+                color: #ECF0F1;
+                text-align: center;
+                padding: 20px;
+            }
+    
+            .container {
+                max-width: 600px;
+                margin: 0 auto;
+                padding: 20px;
+                background-color: #34495E;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+    
+            #clock {
+                position: relative;
+                width: 200px;
+                height: 200px;
+                border: 10px solid #ECF0F1;
+                border-radius: 50%;
+                margin: 20px auto;
+                background-color: #fff;
+            }
+    
+            .hand {
+                position: absolute;
+                width: 50%;
+                height: 6px;
+                background: #ECF0F1;
+                top: 50%;
+                transform-origin: 100%;
+                transform: rotate(90deg);
+            }
+    
+            .second-hand {
+                height: 3px;
+                background: red;
+            }
+    
+            .motivational-quote {
+                font-size: 28px;
+                margin-top: 20px;
+            }
+    
+            .pomodoro-method {
+                margin-top: 40px;
+                padding: 20px;
+                background-color: #1ABC9C;
+                border-radius: 8px;
+            }
+    
+            .goal-input, .goal-item {
+                margin-top: 10px;
+                padding: 10px;
+                border: none;
+                border-radius: 5px;
+                width: calc(100% - 40px);
+                font-size: 18px;
+                background-color: #ECF0F1;
+                color: #2C3E50;
+            }
+    
+            button {
+                background-color: #f6fa05;
+                color: #2C3E50;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                margin: 10px;
+            }
+    
+            button:hover {
+                background-color: #bdc3c7;
+            }
+        </style>
+        <div class="container">
+            <h1>مرحبًا بك في Study with Me</h1>
+            <div id="clock">
+                <div class="hand hour-hand"></div>
+                <div class="hand minute-hand"></div>
+                <div class="hand second-hand"></div>
+            </div>
+            <div id="timer">00:00:00</div>
+            <button id="startButton">بدء</button>
+            <button id="stopButton" disabled>إيقاف</button>
+            <button id="resetButton" disabled>إعادة ضبط</button>
+            <div class="motivational-quote" id="quote"></div>
+            <div class="pomodoro-method">
+                <h2>طريقة بومودورو</h2>
+                <p>اختر المهمة، ضبط المؤقت لمدة 25 دقيقة، اعمل بتركيز، خذ استراحة لمدة 5 دقائق، وكرر!</p>
+                <input type="text" id="goalInput" class="goal-input" placeholder="اكتب هدفك هنا...">
+                <button id="addGoalButton">إضافة هدف</button>
+                <ul id="goalsList"></ul>
+            </div>
+        </div>
+        <script>
+            const hourHand = document.querySelector('.hour-hand');
+            const minuteHand = document.querySelector('.minute-hand');
+            const secondHand = document.querySelector('.second-hand');
+            const startButton = document.getElementById('startButton');
+            const stopButton = document.getElementById('stopButton');
+            const resetButton = document.getElementById('resetButton');
+            const timerDisplay = document.getElementById('timer');
+            const quoteDisplay = document.getElementById('quote');
+            const goalInput = document.getElementById('goalInput');
+            const addGoalButton = document.getElementById('addGoalButton');
+            const goalsList = document.getElementById('goalsList');
+            let timer;
+            let startTime;
+            let elapsedTime = 0;
+    
+            const quotes = [
+                "التحدي الحقيقي هو الاستمرار.",
+                "لا تستسلم، فالنجاح قريب.",
+                "كل يوم هو فرصة جديدة للتقدم.",
+                "اصنع المستقبل الذي تحلم به."
+            ];
+    
+            function setClock() {
+                const now = new Date();
+                const seconds = now.getSeconds();
+                const minutes = now.getMinutes();
+                const hours = now.getHours();
+                const secondsDegrees = ((seconds / 60) * 360) + 90;
+                const minutesDegrees = ((minutes / 60) * 360) + 90;
+                const hoursDegrees = ((hours / 12) * 360) + 90;
+                secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
+                minuteHand.style.transform = `rotate(${minutesDegrees}deg)`;
+                hourHand.style.transform = `rotate(${hoursDegrees}deg)`;
+            }
+    
+            function startTimer() {
+                startTime = Date.now() - elapsedTime;
+                timer = setInterval(() => {
+                    elapsedTime = Date.now() - startTime;
+                    displayTime(elapsedTime);
+                }, 1000);
+                startButton.disabled = true;
+                stopButton.disabled = false;
+                resetButton.disabled = false;
+            }
+    
+            function stopTimer() {
+                clearInterval(timer);
+                startButton.disabled = false;
+                stopButton.disabled = true;
+            }
+    
+            function resetTimer() {
+                clearInterval(timer);
+                elapsedTime = 0;
+                displayTime(elapsedTime);
+                startButton.disabled = false;
+                stopButton.disabled = true;
+                resetButton.disabled = true;
+            }
+    
+            function displayTime(time) {
+                const seconds = Math.floor((time / 1000) % 60);
+                const minutes = Math.floor((time / (1000 * 60)) % 60);
+                const hours = Math.floor((time / (1000 * 60 * 60)) % 24);
+                const formattedTime = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+                timerDisplay.textContent = formattedTime;
+            }
+    
+            function pad(unit) {
+                return unit < 10 ? `0${unit}` : unit;
+            }
+    
+            function displayRandomQuote() {
+                const randomIndex = Math.floor(Math.random() * quotes.length);
+                quoteDisplay.textContent = quotes[randomIndex];
+            }
+    
+            function addGoal() {
+                const goalText = goalInput.value.trim();
+                if (goalText) {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = goalText;
+                    listItem.classList.add('goal-item');
+                    const completeButton = document.createElement('button');
+                    completeButton.textContent = "إكمال";
+                    completeButton.style.marginLeft = "10px";
+                    completeButton.addEventListener('click', () => {
+                        listItem.style.textDecoration = "line-through";
+                    });
+                    listItem.appendChild(completeButton);
+                    goalsList.appendChild(listItem);
+                    goalInput.value = "";
+                }
+            }
+    
+            setInterval(setClock, 1000);
+            displayRandomQuote();
+            startButton.addEventListener('click', startTimer);
+            stopButton.addEventListener('click', stopTimer);
+            resetButton.addEventListener('click', resetTimer);
+            addGoalButton.addEventListener('click', addGoal);
+        </script>
+    </div>
+  )
+}
